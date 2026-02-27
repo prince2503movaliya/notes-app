@@ -64,6 +64,8 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 ROOT_URLCONF = 'notes_app_project.urls'
 
 TEMPLATES = [
@@ -169,6 +171,7 @@ SIMPLE_JWT = {
 
 TIME_ZONE = 'Asia/Kolkata'
 USE_TZ = True
+
 
 
 
