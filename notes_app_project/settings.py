@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-qmme!#p6lw-hd3s7d2cmyuccf9vqx0sscwf^f+780-#g#y)b#)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['notes-app-1-5ali.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -167,5 +167,6 @@ SIMPLE_JWT = {
 
 TIME_ZONE = 'Asia/Kolkata'
 USE_TZ = True
+
 
 
