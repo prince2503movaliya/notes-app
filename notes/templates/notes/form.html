@@ -1,9 +1,10 @@
 {% load static %}
-
 <!doctype html>
 <html lang="en">
 <head>
     <title>{{ form_type }} Note</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="icon" type="image/png" href="{% static 'images/note_image.jpg' %}">
 
@@ -19,14 +20,8 @@
             background-color: #020617;
         }
 
-        .navbar-brand {
-            font-weight: 600;
-        }
-
         .card {
-            border: none;
             border-radius: 14px;
-            background: #ffffff;
             border-left: 4px solid #22c55e;
         }
 
@@ -36,17 +31,12 @@
             border-radius: 8px;
             margin-bottom: 15px;
             font-weight: 600;
-            color: #1e293b;
         }
 
         .form-control {
             border-radius: 8px;
-            font-size: 13px;
-        }
-
-        .form-control:focus {
-            border-color: #22c55e;
-            box-shadow: 0 0 0 0.1rem rgba(34,197,94,0.25);
+            font-size: 14px;
+            padding: 10px;
         }
 
         textarea {
@@ -55,12 +45,12 @@
 
         .btn-clean {
             border-radius: 8px;
-            font-size: 12px;
-            padding: 6px 14px;
+            padding: 8px 16px;
+            font-size: 14px;
         }
 
         .form-label {
-            font-size: 12px;
+            font-size: 13px;
             color: #475569;
         }
 
@@ -70,21 +60,59 @@
             border-radius: 8px;
             padding: 10px;
         }
+
+        /* 🔥 MOBILE FIX */
+        @media (max-width: 767px) {
+
+            .container {
+                padding: 10px;
+            }
+
+            .card {
+                margin: 0;
+                padding: 15px !important;
+            }
+
+            .btn-group-mobile {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn-group-mobile .btn {
+                width: 100%;
+            }
+
+            .preview-box img {
+                width: 100%;
+                height: auto;
+            }
+
+    
+
+        }
+
     </style>
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar px-4 py-2">
-    <span class="navbar-brand text-white">{{ form_type }} Note</span>
+<nav class="navbar px-3 py-2">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
 
-    <a href="{% url 'note_list' %}" class="btn btn-outline-light btn-clean">
-        Back
-    </a>
+        <span class="navbar-brand text-white m-0">
+            {{ form_type }} Note
+        </span>
+
+        <a href="{% url 'note_list' %}" 
+           class="btn btn-outline-light btn-clean ms-auto">
+            Back
+        </a>
+
+    </div>
 </nav>
 
-<div class="container mt-5">
+<div class="container mt-3">
 
     <div class="card p-4 shadow-sm mx-auto" style="max-width: 600px;">
 
@@ -121,7 +149,7 @@
                 <label class="form-label">Title</label>
                 <input type="text" name="title" class="form-control"
                        value="{{ note.title|default:'' }}"
-                       placeholder="Enter note title" required autofocus>
+                       placeholder="Enter note title" required>
             </div>
 
             <!-- CONTENT -->
@@ -133,18 +161,17 @@
 
             <!-- IMAGE -->
             <div class="mb-4">
-            
 
                 {% if note and note.image %}
                     <div class="preview-box mb-2">
-                        <img src="{{ note.image.url }}"
-                             class="img-fluid rounded mb-2"
-                             style="max-height: 180px;">
-                        <div class="d-flex gap-2">
+                        <img src="{{ note.image.url }}" class="img-fluid rounded mb-2">
+
+                        <div class="d-flex flex-wrap gap-2">
                             <a href="{{ note.image.url }}" target="_blank"
-                               class="btn btn-outline-primary btn-sm">View</a>
+                               class="btn btn-outline-primary btn-sm w-100">View Image</a>
+
                             <a href="{{ note.image.url }}" download
-                               class="btn btn-outline-success btn-sm">Download</a>
+                               class="btn btn-outline-success btn-sm w-100">Download Image</a>
                         </div>
                     </div>
                 {% endif %}
@@ -155,7 +182,6 @@
 
             <!-- FILE -->
             <div class="mb-4">
-                
 
                 {% if note and note.file %}
                     <div class="preview-box mb-2">
@@ -163,11 +189,12 @@
                             {{ note.file.name|cut:"notes/files/" }}
                         </p>
 
-                        <div class="d-flex gap-2">
+                        <div class="d-flex flex-wrap gap-2">
                             <a href="{{ note.file.url }}" target="_blank"
-                               class="btn btn-outline-primary btn-sm">View</a>
+                               class="btn btn-outline-primary btn-sm w-100">View File</a>
+
                             <a href="{{ note.file.url }}" download
-                               class="btn btn-outline-success btn-sm">Download</a>
+                               class="btn btn-outline-success btn-sm w-100">Download File</a>
                         </div>
                     </div>
                 {% endif %}
@@ -177,7 +204,8 @@
             </div>
 
             <!-- BUTTONS -->
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between btn-group-mobile">
+
                 <a href="{% url 'note_list' %}" class="btn btn-outline-dark btn-clean">
                     Cancel
                 </a>
@@ -189,6 +217,7 @@
                         Update Note
                     {% endif %}
                 </button>
+
             </div>
 
         </form>
