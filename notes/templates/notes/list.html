@@ -161,14 +161,28 @@
         </select>
       </div>
 
-      <div class="col-md-2">
-        <input type="date" name="start" class="form-control">
-      </div>
+       <!-- START DATE -->
+    <div class="col-md-2 col-6">
+      <label class="form-label small">From Date</label>
+      <input
+        type="date"
+        name="start"
+        class="form-control"
+        value="{{ request.GET.start }}"
+      />
+    </div>
 
-      <div class="col-md-2">
-        <input type="date" name="end" class="form-control">
-      </div>
-
+    <!-- END DATE -->
+    <div class="col-md-2 col-6">
+      <label class="form-label small">To Date</label>
+      <input
+        type="date"
+        name="end"
+        class="form-control"
+        value="{{ request.GET.end }}"
+      />
+    </div>
+    
       <div class="col-md-3">
         <button class="btn btn-primary w-100">Apply</button>
       </div>
@@ -227,4 +241,3 @@ document.querySelectorAll('.toast').forEach(t => new bootstrap.Toast(t).show());
 
 </body>
 </html>
-
