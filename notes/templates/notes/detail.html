@@ -4,6 +4,8 @@
 <head>
     <title>View Note</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="icon" type="image/png" href="{% static 'images/note_image.jpg' %}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,10 +16,12 @@
             font-size: 14px;
         }
 
+        /* NAVBAR */
         .navbar {
             background-color: #020617;
         }
 
+        /* CARD */
         .card {
             border: none;
             border-radius: 14px;
@@ -25,10 +29,13 @@
             border-left: 4px solid #22c55e;
         }
 
+        /* HEADER */
         .note-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            flex-wrap: wrap; /* ✅ mobile fix */
+            gap: 6px;
             background: #f1f5f9;
             padding: 10px 14px;
             border-radius: 8px;
@@ -39,19 +46,24 @@
             font-weight: 600;
             font-size: 15px;
             color: #1e293b;
+            word-break: break-word; /* ✅ long title fix */
         }
 
         .note-time {
             font-size: 12px;
             color: #64748b;
+            white-space: nowrap;
         }
 
+        /* CONTENT */
         .note-content {
             color: #334155;
             line-height: 1.6;
             white-space: pre-line;
+            word-break: break-word;
         }
 
+        /* META */
         .note-meta {
             font-size: 12px;
             color: #64748b;
@@ -61,6 +73,7 @@
             margin-top: 18px;
         }
 
+        /* SECTIONS */
         .section-box {
             background: #f8fafc;
             padding: 12px;
@@ -68,36 +81,51 @@
             margin-top: 20px;
         }
 
+        /* BUTTONS */
         .btn-clean {
             border-radius: 8px;
             font-size: 12px;
             padding: 6px 12px;
         }
 
-        .btn-outline-primary:hover {
-            background: #2563eb;
-            color: #fff;
-        }
-
-        .btn-outline-success:hover {
-            background: #16a34a;
-            color: #fff;
-        }
-
-        .btn-outline-danger:hover {
-            background: #dc2626;
-            color: #fff;
-        }
-
-        .btn-outline-dark:hover {
-            background: #1e293b;
-            color: #fff;
-        }
-
+        /* IMAGE */
         .preview-img {
+            width: 100%;
+            height: auto;
             max-height: 250px;
+            object-fit: contain;
             border-radius: 8px;
             margin-bottom: 10px;
+        }
+
+        /* MOBILE IMPROVEMENTS */
+        @media (max-width: 576px) {
+
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .card {
+                padding: 15px !important;
+            }
+
+            .note-title {
+                font-size: 14px;
+            }
+
+            .note-time {
+                font-size: 11px;
+            }
+
+            /* ✅ buttons full width on mobile */
+            .mobile-stack {
+                flex-direction: column;
+            }
+
+            .mobile-stack .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -105,15 +133,15 @@
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar px-4 py-2">
-    <span class="navbar-brand text-white">Note Details</span>
+<nav class="navbar px-3 py-2 d-flex justify-content-between align-items-center">
+    <span class="navbar-brand text-white mb-0">Note Details</span>
 
     <a href="{% url 'note_list' %}" class="btn btn-outline-light btn-clean">
         Back
     </a>
 </nav>
 
-<div class="container mt-5">
+<div class="container mt-4">
 
     <div class="card p-4 shadow-sm">
 
@@ -135,26 +163,28 @@
             Updated: {{ note.updated_at|date:"d M Y, h:i A" }}
         </div>
 
-        <!-- IMAGE SECTION -->
+        <!-- IMAGE -->
         {% if note.image %}
         <div class="section-box">
             <h6 class="fw-semibold mb-2">Image</h6>
 
-            <img src="{{ note.image.url }}" class="img-fluid preview-img">
+            <img src="{{ note.image.url }}" class="preview-img">
 
-            <div class="d-flex gap-2">
-                <a href="{{ note.image.url }}" target="_blank" class="btn btn-outline-primary btn-clean">
+            <div class="d-flex gap-2 mobile-stack">
+                <a href="{{ note.image.url }}" target="_blank"
+                   class="btn btn-outline-primary btn-clean">
                     View Image
                 </a>
 
-                <a href="{{ note.image.url }}" download class="btn btn-outline-success btn-clean">
+                <a href="{{ note.image.url }}" download
+                   class="btn btn-outline-success btn-clean">
                     Download
                 </a>
             </div>
         </div>
         {% endif %}
 
-        <!-- FILE SECTION -->
+        <!-- FILE -->
         {% if note.file %}
         <div class="section-box">
             <h6 class="fw-semibold mb-2">Attachment</h6>
@@ -163,12 +193,14 @@
                 {{ note.file.name|cut:"notes/files/" }}
             </p>
 
-            <div class="d-flex gap-2">
-                <a href="{{ note.file.url }}" target="_blank" class="btn btn-outline-primary btn-clean">
+            <div class="d-flex gap-2 mobile-stack">
+                <a href="{{ note.file.url }}" target="_blank"
+                   class="btn btn-outline-primary btn-clean">
                     View File
                 </a>
 
-                <a href="{{ note.file.url }}" download class="btn btn-outline-success btn-clean">
+                <a href="{{ note.file.url }}" download
+                   class="btn btn-outline-success btn-clean">
                     Download
                 </a>
             </div>
@@ -176,17 +208,20 @@
         {% endif %}
 
         <!-- ACTION BUTTONS -->
-        <div class="mt-4 d-flex gap-2 flex-wrap">
+        <div class="mt-4 d-flex gap-2 flex-wrap mobile-stack">
 
-            <a href="{% url 'note_update' note.id %}" class="btn btn-outline-primary btn-clean">
+            <a href="{% url 'note_update' note.id %}"
+               class="btn btn-outline-primary btn-clean">
                 Edit
             </a>
 
-            <a href="{% url 'note_delete' note.id %}" class="btn btn-outline-danger btn-clean">
+            <a href="{% url 'note_delete' note.id %}"
+               class="btn btn-outline-danger btn-clean">
                 Delete
             </a>
 
-            <a href="{% url 'note_list' %}" class="btn btn-outline-dark btn-clean">
+            <a href="{% url 'note_list' %}"
+               class="btn btn-outline-dark btn-clean">
                 Back
             </a>
 
